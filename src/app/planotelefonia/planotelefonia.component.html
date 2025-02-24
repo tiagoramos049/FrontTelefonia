@@ -1,0 +1,96 @@
+<div *ngIf="message" class="alert" [ngClass]="{
+    'alert-success': message.type === 'success',
+    'alert-danger': message.type === 'error'
+  }">
+  {{ message.text }}
+  </div>
+
+  
+  <div class="container-xl">
+      <div class="table-responsive">
+        <div class="table-wrapper">
+          <div class="table-title">
+            <div class="row">
+              <div class="col-sm-6">
+                <h4><b>Lista de Planos Telefonia</b></h4>
+              </div>
+              <div class="col-sm-12">
+                <button class="btn btn-success" (click)="openModal()">Novo Plano Telefonico</button>
+              </div>
+              <br>
+              <br>
+            </div>
+          </div>
+          <table class="table table-striped table-hover table-bordered table-content">
+            <thead>
+              <tr class="center-align">
+                  <th>Nome</th>
+                  <th>Preço</th>
+                  <th>Franquia Dados</th>
+                  <th>Minutos Ligacao</th>
+                  <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let plano of planoTelefoneList" class="center-align">
+                <td>{{ plano.nome }}</td>
+                <td>{{ plano.preco }}</td>
+                <td>{{ plano.franquiaDados }}</td>
+                <td>{{ plano.minutosLigacao }}</td>
+                <td>
+                  <button class="btn btn-primary" (click)="updateCliente()">Editar</button>
+                  <button class="btn btn-danger" (click)="deleteCliente()">Excluir</button>
+                </td>
+              </tr>
+            
+              <!-- Mostrar mensagem se a lista estiver vazia -->
+              <tr *ngIf="planoTelefoneList.length === 0">
+                <td colspan="5" class="text-center">Não existem planos cadastrados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  
+    <div class="modal" *ngIf="isModalOpen" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h2>{{ isEditing ? 'Editar Plano' : 'Novo Plano' }}</h2>
+    
+        <div *ngIf="message" class="alert" [ngClass]="{'alert-success': message.type === 'success', 'alert-danger': message.type === 'error'}">
+          {{ message.text }}
+        </div>
+    
+        <form (ngSubmit)="adicionarPlano()">
+          <div class="form-group">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" [(ngModel)]="planoForm.nome" name="nome" class="form-control" required>
+          </div>
+        
+          <div class="form-group">
+            <label for="preco">Preço</label>
+            <input type="text" id="preco" [(ngModel)]="planoForm.preco" name="preco" class="form-control" required>
+          </div>
+        
+          <div class="form-group">
+            <label for="franquiaDados">Franquia de Dados</label>
+            <input type="text" id="franquiaDados" [(ngModel)]="planoForm.franquiaDados" name="franquiaDados" class="form-control" required>
+          </div>
+        
+          <div class="form-group">
+            <label for="minutosLigacao">Minutos de Ligação</label>
+            <input type="text" id="minutosLigacao" [(ngModel)]="planoForm.minutosLigacao" name="minutosLigacao" class="form-control" required>
+          </div>
+        
+          <div class="form-group">
+            <label for="clienteId">Cliente</label>
+            <select id="clienteId" [(ngModel)]="planoForm.clienteId" name="clienteId" class="form-control" required>
+              <option *ngFor="let cliente of clientes" [value]="cliente.id">{{ cliente.nome }}</option>
+            </select>
+          </div>
+        
+          <button type="submit" class="btn btn-success">{{ isEditing ? 'Salvar Alterações' : 'Salvar' }}</button>
+          <button type="button" class="btn btn-danger" (click)="closeModal()">Cancelar</button>
+        </form>
+      </div>
+    </div>
