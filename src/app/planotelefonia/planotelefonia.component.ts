@@ -86,28 +86,50 @@ export class PlanotelefoniaComponent {
 
     adicionarPlano() {
       if (this.isEditing) {
-        // Atualizar plano existente
+        // Atualizar cliente
         this.httpProvider.salvarPlano(this.planoForm).subscribe(
           (response) => {
-            this.message = { text: 'Plano alterado com sucesso!', type: 'success' };
-            this.closeModal();
+            console.log('Cliente salvo com sucesso!', response);
+            this.showMessage('success', 'Cliente atualizado com sucesso!');
+            this.getAllPlano(); // Recarregar a lista de clientes
+            this.closeModal(); // Fechar o modal após salvar
           },
           (error) => {
-            this.message = { text: 'Erro ao alterar plano', type: 'error' };
+            console.error('Erro ao salvar cliente', error);
+            this.showMessage('error', 'Erro ao atualizar cliente. Tente novamente.');
           }
         );
       } else {
-        // Adicionar um novo plano
-        this.httpProvider.salvarPlano(this.planoForm).subscribe(
+        // Adicionar novo cliente
+        const clienteData = {
+          nome: this.planoForm.nome,
+          preco: this.planoForm.preco,
+          franquiaDados: this.planoForm.franquiaDados,
+          minutosLigacao: this.planoForm.minutosLigacao,
+          clienteId: this.planoForm.clienteId,  // O clienteId que foi selecionado no frontend
+          planoId: this.planoForm.planoId,      // O planoId já está presente
+          clientePlanos: this.planoForm.clienteId && this.planoForm.planoId ? [
+            {
+              clienteId: this.planoForm.clienteId,
+              planoId: this.planoForm.planoId
+            }
+          ] : []
+        };
+        
+        this.httpProvider.salvarPlano(clienteData).subscribe(
           (response) => {
-            this.message = { text: 'Plano salvo com sucesso!', type: 'success' };
-            this.closeModal();
+            console.log('Cliente salvo com sucesso!', response);
+            this.showMessage('success', 'Cliente cadastrado com sucesso!');
+            this.getAllPlano(); // Recarregar a lista de clientes
+            this.closeModal(); // Fechar o modal após salvar
           },
           (error) => {
-            this.message = { text: 'Erro ao salvar plano', type: 'error' };
+            console.error('Erro ao salvar cliente', error);
+            this.showMessage('error', 'Erro ao cadastrar cliente. Tente novamente.');
           }
         );
       }
     }
+    
 }
 

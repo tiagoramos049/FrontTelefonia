@@ -5,6 +5,7 @@ export class PlanoTelefonia {
   franquiaDados: string;
   minutosLigacao: number;
   clienteId: string | null;
+  planoId: string | null;
   clientePlanos: any[];
 
   constructor() {
@@ -14,6 +15,7 @@ export class PlanoTelefonia {
     this.franquiaDados = '';
     this.minutosLigacao = 0;
     this.clienteId = null;
+    this.planoId = null;
     this.clientePlanos = [];
   }
 }
