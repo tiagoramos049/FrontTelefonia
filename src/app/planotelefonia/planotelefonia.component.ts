@@ -97,21 +97,20 @@ export class PlanotelefoniaComponent {
           (error) => {
             console.error('Erro ao salvar cliente', error);
             this.showMessage('error', 'Erro ao atualizar cliente. Tente novamente.');
+            this.closeModal(); // Fechar o modal após salvar
           }
         );
       } else {
-        // Adicionar novo cliente
+
         const clienteData = {
           nome: this.planoForm.nome,
           preco: this.planoForm.preco,
           franquiaDados: this.planoForm.franquiaDados,
           minutosLigacao: this.planoForm.minutosLigacao,
-          clienteId: this.planoForm.clienteId,  // O clienteId que foi selecionado no frontend
-          planoId: this.planoForm.planoId,      // O planoId já está presente
-          clientePlanos: this.planoForm.clienteId && this.planoForm.planoId ? [
+          clienteId: this.planoForm.clienteId, 
+          clientePlanos: this.planoForm.clienteId ? [
             {
               clienteId: this.planoForm.clienteId,
-              planoId: this.planoForm.planoId
             }
           ] : []
         };
